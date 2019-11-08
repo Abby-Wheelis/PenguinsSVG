@@ -6,16 +6,17 @@ penguinPromise.then(function(penguins)
     
     console.log(QuizArray(penguins));
     
-    //setupSVG(penguins);
-    
     console.log(getQuizes(penguins[0]));
     
-    console.log(makeYVals(penguins, 0));
+    console.log(ys(penguins, 37));
     
-    //console.log(ys(penguins));
+    drawSampleGraph(penguins, 1);
     
-    //makeGraph(penguins);
+    changeDay(penguins);
     
+    console.log(penguins[0].quizes);
+    
+    nextDay(penguins);
 },
 function(error)                  
 {
@@ -38,35 +39,70 @@ var getGrade = function(quiz)
         return quiz.grade
     }
 
-/*var getQuizDay = function(penguin, day)
+// this is the function that makes and tells the day buttons what to do
+var changeDay = function(penguins)
 {
-    return penguin.quizes[day].grade;
+    d3.select("#Buttons")
+    .selectAll("button")
+    .data(penguins[0].quizes)
+    .enter()
+    .append("button")
+    .text(function(d)
+                   {
+                    return "Day " + d.day;
+                    })
+    .on("click", function(d)
+                    {
+                        d3.selectAll("circle")
+                        .remove();
+        
+                        nextDay(penguins, d.day);
+        
+                        return drawSampleGraph(penguins, d.day);
+                                                            
+                    })
+            
 }
 
-var getQuizesOne = function(penguins)
+// helper function to set what the next button will do when it is clicked
+var nextDay = function(penguins, day)
 {
-    return penguins.map(getQuizDay); 
-}*/
+    d3.select("#next")
+    .on("click", function(penguins, day)
+        {
+            console.log("reached this point")
+
+            d3.selectAll("circle")
+            .remove()
+                            
+            var addDay= function(x){return x+1}
+            
+            var newDay = addDay(day)
+
+            return drawSampleGraph(penguins, newDay)
+        })
+}
 
 
-/*var ys= function(penguins)
+// this is the function that determines the y values
+var ys= function(penguins,day)
     {
         return QuizArray(penguins).map(function(penguin)
-        {
-            return penguin[0];
-        })
+            {
+                var fixDays = function(d)
+                    {
+                        if(d<15)
+                            {return d-1}
+                        else if(d<30)
+                            {return d-2}
+                        else {return d-3};
+                    }
+            
+                return penguin[fixDays(day)];
+            })
 
-    }*/
-    
-var ys = [7, 9, 3, 6, 7, 5, 6, 7, 5, 7, 4, 6, 5, 7, 5, 6, 9, 6, 5, 8, 5, 6, 9]
-
-var makeYVals = function(penguins,day)
-    {
-        return QuizArray(penguins).map(function(penguin)
-        {
-            return penguin[day];
-        })
     }
+    
 
 
 //begin attempt to plot some points
@@ -76,26 +112,14 @@ var setupSVG = function(points)
 {
     d3.select("svg")
     .attr("width", screen.width)
-    .attr("height", screen.height)
-    
+    .attr("height", screen.height)   
 }
 
 setupSVG()
 
-/*var makeGraph = function(penguins)
-{
-    var ys= function(penguins)
+var drawSampleGraph = function(penguins,day)
     {
-        return QuizArray(penguins).map(function(penguin)
-        {
-            return penguin[0];
-        })
-
-    }*/
-
-    var drawSampleGraph = function(points, xscale, yscale)
-    {
-        var points= ys.map(function(y,i)
+        var points= ys(penguins,day).map(function(y,i)
         {
 
             return{
@@ -114,7 +138,7 @@ setupSVG()
         var yscale=d3.scaleLinear()
         yscale.domain([0, d3.max(points, function(p)
                                 {return p.y})])
-        yscale.range([screen.height,10])
+        yscale.range([screen.height-10,10])
 
         d3.select("svg")
         .selectAll("circle")
@@ -128,9 +152,3 @@ setupSVG()
               {return yscale(point.y)})
 
     }
-
-    drawSampleGraph()
-
-//}
-
-//drawSampleGraph()

@@ -1,0 +1,29 @@
+#Buttons
+{
+    width: 800px;
+}
+
+h1,h2
+{
+    text-align: center;
+}
+
+button
+{
+    width: 80px;
+    height: 50px;
+}
+
+.centre
+{
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+}
+
+body
+{
+    width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
