@@ -6,9 +6,10 @@
 h1,h2
 {
     text-align: center;
+    color: #d0894b;
 }
 
-button
+#Buttons button
 {
     width: 80px;
     height: 50px;
@@ -26,4 +27,35 @@ body
     width: 800px;
     margin-left: auto;
     margin-right: auto;
+    background-color: #dbe3e5
+}
+
+button:focus
+{
+    background-color: #d9b45d;
+}
+
+.Next button
+{
+    width: 80px;
+    height: 30px;
+}
+
+.Next
+{
+    margin-left: auto;
+    margin-right: auto;
+    width: 164px;
+    margin-top: 8px;
+}
+
+circle
+{
+    fill: #253542;
+}
+
+button
+{
+    color: #2b4753;
+    font-weight: bold;
 }

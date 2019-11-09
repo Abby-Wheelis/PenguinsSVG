@@ -16,7 +16,9 @@ penguinPromise.then(function(penguins)
     
     console.log(penguins[0].quizes);
     
-    nextDay(penguins);
+    nextDay(penguins,1);
+    
+    preDay(penguins, 0);
 },
 function(error)                  
 {
@@ -56,7 +58,15 @@ var changeDay = function(penguins)
                         d3.selectAll("circle")
                         .remove();
         
+                        /*d3.select("#Buttons")
+                        .selectAll("h3")
+                        .append("h3")
+                        .text(function(d)
+                             {return d.day});*/
+        
                         nextDay(penguins, d.day);
+        
+                        preDay(penguins, d.day);
         
                         return drawSampleGraph(penguins, d.day);
                                                             
@@ -65,21 +75,39 @@ var changeDay = function(penguins)
 }
 
 // helper function to set what the next button will do when it is clicked
-var nextDay = function(penguins, day)
+var nextDay = function(penguins,day)
 {
     d3.select("#next")
-    .on("click", function(penguins, day)
+    .on("click", function()
+        {
+            console.log("reached this point")
+
+            d3.selectAll("circle")
+            .remove()
+                
+            var addDay= function(x){return x+1}
+            
+            var newDay = addDay(day)
+
+            return drawSampleGraph(penguins, newDay)
+        })
+}
+
+var preDay = function(penguins,day)
+{
+    d3.select("#back")
+    .on("click", function()
         {
             console.log("reached this point")
 
             d3.selectAll("circle")
             .remove()
                             
-            var addDay= function(x){return x+1}
+            var lessDay= function(x){return x-1}
             
-            var newDay = addDay(day)
+            var backDay = lessDay(day)
 
-            return drawSampleGraph(penguins, newDay)
+            return drawSampleGraph(penguins, backDay)
         })
 }
 
@@ -91,16 +119,19 @@ var ys= function(penguins,day)
             {
                 var fixDays = function(d)
                     {
-                        if(d<15)
+                        if(d<=14)
                             {return d-1}
-                        else if(d<30)
+                        else if(d==15)
+                            {return 14}
+                        else if(d<=29)
                             {return d-2}
+                        else if (d==30)
+                            {return 28}
                         else {return d-3};
                     }
             
                 return penguin[fixDays(day)];
             })
-
     }
     
 
